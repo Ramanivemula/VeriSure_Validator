@@ -25,6 +25,8 @@ import {
   Clock, // For Investigation
   PauseCircle, // For Suspend Issuance
   Clipboard, // For Copy Code
+  Share2,
+  Camera,
 } from "lucide-react";
 
 // --- SHADCN/UI & RECHARTS IMPORTS ---
@@ -49,10 +51,11 @@ import {
   Bar,
   Legend
 } from "recharts";
+import VerificationResults from "../components/results/VerificationResult";
 
-// ---------- Dummy data (Rajasthan) ----------
+// ---------- Dummy data (jharkhand) ----------
 const batchRows = [
-  { id: "RAJ-001", name: "Aarav Sharma", university: "University of Rajasthan", status: "verified", trust: 95, submittedOn: "2025-08-23", job: "Software Engineer" },
+  { id: "RAJ-001", name: "Aarav Sharma", university: "University of jharkhand", status: "verified", trust: 95, submittedOn: "2025-08-23", job: "Software Engineer" },
   { id: "RAJ-002", name: "Priya Meena", university: "IIT Jodhpur", status: "verified", trust: 92, submittedOn: "2025-08-21", job: "Data Analyst" },
   { id: "RAJ-003", name: "Rohit Singh", university: "Unknown Institute", status: "flagged", trust: 34, submittedOn: "2025-08-19", job: "Administrative Asst." },
   { id: "RAJ-004", name: "Simran Kaur", university: "BITS Pilani", status: "pending", trust: null, submittedOn: "2025-08-18", job: "Research Fellow" },
@@ -153,7 +156,14 @@ export default function VerifierAllInOneEnhanced() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [selectedRow, setSelectedRow] = useState<any>(batchRows[2]);
-  
+
+  // Add uploadMode state for Quick Verify
+  const [uploadMode, setUploadMode] = useState<"file" | "qr">("file");
+
+  // Add missing states for uploading and extractedFields
+  const [uploading, setUploading] = useState(false);
+  const [extractedFields, setExtractedFields] = useState<any[]>([]);
+
   // Modals
   const [attachOpen, setAttachOpen] = useState(false);
   const [investigateOpen, setInvestigateOpen] = useState(false);
@@ -234,6 +244,22 @@ export default function VerifierAllInOneEnhanced() {
     </div>
   );
 
+  function onFileSelected(f: File) {
+    setUploading(true);
+    setExtractedFields([]); // Reset
+    // Simulate OCR processing
+    setTimeout(() => {
+      setExtractedFields([
+        { field: 'Name', value: 'Rahul Kumar', confidence: 95 },
+        { field: 'Roll No', value: 'JH2021-0456', confidence: 98 },
+        { field: 'Course', value: 'B.Tech Computer Science', confidence: 97 },
+        { field: 'Marks', value: '78%', confidence: 85 },
+        { field: 'Certificate ID', value: 'CERT-XYZ-1234', confidence: 92 }
+      ]);
+      setUploading(false);
+    }, 2000); // Simulate 2 second processing
+  }
+
   return (
     <div className="flex min-h-screen bg-background text-foreground">
       {/* Sidebar */}
@@ -244,7 +270,7 @@ export default function VerifierAllInOneEnhanced() {
           </div>
           <div>
             <div className="text-lg font-bold text-primary">Verifier Portal</div>
-            <div className="text-xs text-muted-foreground">Rajasthan Agency View</div>
+            <div className="text-xs text-muted-foreground">Jhar-Praman Digital (JPD)</div>
           </div>
         </div>
 
@@ -275,7 +301,7 @@ export default function VerifierAllInOneEnhanced() {
             <div className="text-right">
               <div className="text-xs text-muted-foreground">Agency Status</div>
               <div className="font-semibold flex items-center gap-1">
-                <MapPin className="w-3 h-3 text-red-600"/> Rajasthan Govt.
+                <MapPin className="w-3 h-3 text-red-600"/> Jharkhand Govt.
               </div>
             </div>
           </div>
@@ -336,60 +362,97 @@ export default function VerifierAllInOneEnhanced() {
             <Card className="shadow-lg md:col-span-2">
               <CardHeader><CardTitle>Certificate Verification</CardTitle></CardHeader>
               <CardContent>
-                <div className="grid gap-4">
-                  
-                  {/* Tab 1: File Upload */}
-                  <div className="border border-muted rounded-lg p-4 bg-gray-50">
-                    <div className="font-semibold mb-2 flex items-center gap-2"><Upload className="w-4 h-4 text-primary"/> Upload Document</div>
-                    <div className="border-2 border-dashed border-primary/30 rounded-lg p-4 text-center bg-primary/5 hover:bg-primary/10 transition cursor-pointer" onClick={() => document.getElementById('file-input')?.click()}>
-                        <Upload className="w-6 h-6 mx-auto mb-2 text-primary" />
-                        <div className="text-sm font-medium">Click to upload PDF / Image</div>
-                        <input id="file-input" type="file" accept=".pdf,image/*" className="hidden" onChange={(e)=> handleUploadSelect(e.target.files?.[0])} />
-                    </div>
+                {/* Upload */}
+        <>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-2xl font-bold">Verify Certificate</h2>
+              <div className="text-sm text-muted-foreground">Choose verification method</div>
+            </div>
+
+            {/* Toggle for File Upload / QR Scan */}
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <Card
+                className={`cursor-pointer border-2 ${
+                  uploadMode === "file" ? "border-primary shadow-lg" : "border-border hover:bg-muted/10"
+                }`}
+                onClick={() => setUploadMode("file")}
+              >
+                <CardContent className="p-6 text-center">
+                  <Upload className="mx-auto w-8 h-8 text-primary mb-2" />
+                  <h3 className="font-semibold">File Upload</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Upload PDF, JPG, or PNG certificates
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card
+                className={`cursor-pointer border-2 ${
+                  uploadMode === "qr" ? "border-primary shadow-lg" : "border-border hover:bg-muted/10"
+                }`}
+                onClick={() => setUploadMode("qr")}
+              >
+                <CardContent className="p-6 text-center">
+                  <QrCode className="mx-auto w-8 h-8 text-primary mb-2" />
+                  <h3 className="font-semibold">QR Code Scan</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Scan certificate QR using camera
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* File Upload Panel */}
+            {uploadMode === "file" && (
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <div
+                    className="border-2 border-dashed rounded-lg p-6 cursor-pointer hover:border-primary/50 transition-colors"
+                    onClick={() =>
+                      document.getElementById("hidden-file-input")?.click()
+                    }
+                  >
+                    <Upload className="mx-auto w-10 h-10 text-muted-foreground" />
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Drag & drop or click to upload certificate
+                    </p>
+                    <input
+                      id="hidden-file-input"
+                      type="file"
+                      accept="application/pdf,image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const f = e.target.files && e.target.files[0];
+                        if (f) onFileSelected(f);
+                      }}
+                    />
                   </div>
 
-                  {/* Tab 2: ID Lookup */}
-                  <div className="border border-muted rounded-lg p-4 bg-gray-50">
-                    <div className="font-semibold mb-2 flex items-center gap-2"><Search className="w-4 h-4 text-primary"/> ID Lookup</div>
-                    <div className="flex gap-2">
-                        <Input placeholder="Enter Certificate ID, Roll No, or Hash" onChange={(e)=> setQuery(e.target.value)} />
-                        <Button onClick={fakeVerify} disabled={isVerifying}><Search className="w-4 h-4 mr-2"/>{isVerifying ? 'Verifying...' : 'Search ID'}</Button>
-                    </div>
-                  </div>
-                  
-                  {/* Tab 3: QR Scan */}
-                  <div className="border border-muted rounded-lg p-4 bg-gray-50">
-                    <div className="font-semibold mb-2 flex items-center gap-2"><QrCode className="w-4 h-4 text-primary"/> QR Code Scan</div>
-                    <Button variant="secondary" className="w-full" onClick={()=> alert('Opening dedicated camera scanner (demo)')}>Activate QR Scanner</Button>
-                  </div>
-                  
-                  {/* FIX: Removed indicatorColor */}
-                  {isVerifying && <div className="mt-2"><Progress value={60} /></div>} 
+                  {/* Show OCR Progress if processing */}
+                  {uploading || extractedFields.length > 0 ? (
+                    <VerificationResults></VerificationResults>
+                  ) : null}
+                </CardContent>
+              </Card>
+            )}
 
-                  {/* Verification Result - UPDATED TO MATCH IMAGE BREAKDOWN */}
-                  {result && (
-                    <div className="mt-4 p-4 rounded-lg border shadow-md bg-background transition-all duration-300">
-                      <h4 className="font-bold text-lg mb-4">Verification Result - Overall: <Badge className={`font-semibold ${colorMap[result.status]}`}>{result.trust}% {result.status.toUpperCase()}</Badge></h4>
-                      
-                      {/* Itemized Breakdown */}
-                      <div className="space-y-1">
-                          <VerificationItem label="Name" value={result.name.value} score={result.name.score} status={result.name.status} />
-                          <VerificationItem label="Roll No" value={result.roll.value} score={result.roll.score} status={result.roll.status} />
-                          <VerificationItem label="Course" value={result.course.value} score={result.course.score} status={result.course.status} />
-                          <VerificationItem label="Marks" value={result.marks.value} score={result.marks.score} status={result.marks.status} />
-                          <VerificationItem label="Certificate ID" value={result.certId.value} score={result.certId.score} status={result.certId.status} />
-                      </div>
-
-                      {result.status === 'flagged' && (
-                        <div className="mt-4 p-3 border-t border-red-200 text-sm text-red-700 font-medium">
-                          <div className="font-bold mb-1">Key Verdict:</div>
-                          <p><b>Escalation Required:</b> The overall trust score of {result.trust}% (Flagged) requires immediate manual review due to low confidence in the Certificate ID and Name components.</p>
-                          <div className="font-mono text-xs mt-2 text-muted-foreground truncate">TX ID: {result.tx}</div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
+            {/* QR Scan Panel */}
+            {uploadMode === "qr" && (
+              <Card>
+                <CardContent className="p-6 text-center">
+                  <div className="w-full h-64 bg-black/5 rounded-lg flex items-center justify-center border border-dashed">
+                    <span className="text-base text-muted-foreground">
+                      [Camera Feed Placeholder for QR Scanning]
+                    </span>
+                  </div>
+                  <Button className="mt-4">
+                    <Camera className="w-4 h-4 mr-2" /> Start Scan
+                  </Button>
+                  <p className="text-xs text-muted-foreground mt-2">Scanning initiates instant database lookup via embedded QR link.</p>
+                </CardContent>
+              </Card>
+            )}
+        </>
               </CardContent>
             </Card>
 
@@ -699,8 +762,8 @@ export default function VerifierAllInOneEnhanced() {
                   
                   {/* Custom Code Block Component */}
                   <CodeBlock>
-{`<script src="https://rajasthan-gov.verifynow/widget.js"></script>
-<div id="rajasthan-verifier" data-api-key="YOUR_LIVE_KEY"></div>`}
+{`<script src="https://jharkhand-gov.verifynow/widget.js"></script>
+<div id="jharkhand-verifier" data-api-key="YOUR_LIVE_KEY"></div>`}
                   </CodeBlock>
 
                   <div className="mt-6 pt-4 border-t">

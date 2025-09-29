@@ -50,6 +50,7 @@ import {
 } from "recharts";
 
 import heroImage from "@/assets/hero-verification.jpg"; // optional, used in forensic preview placeholder
+import VerificationResults from "@/components/results/VerificationResult";
 
 // ---------- Mock / helper types ----------
 type FieldExtract = {
@@ -557,43 +558,7 @@ export default function StudentAllInOne() {
 
                   {/* Show OCR Progress if processing */}
                   {uploading || extractedFields.length > 0 ? (
-                    <div className="mt-6 text-left">
-                      <h4 className="font-semibold mb-2">OCR Extraction Progress: {progress}%</h4>
-                      <Progress value={progress} className="h-2" />
-                      <ul className="mt-3 space-y-2 max-h-48 overflow-y-auto">
-                        {extractedFields.map((f, idx) => (
-                          <li
-                            key={idx}
-                            className="flex justify-between items-center p-2 rounded-md bg-muted/10"
-                          >
-                            <div>
-                              <div className="font-medium">{f.label}</div>
-                              <div className="text-sm text-muted-foreground">{f.value}</div>
-                            </div>
-                            <div
-                              className={`font-medium text-xs ${
-                                f.status === "ok"
-                                  ? "text-emerald-600"
-                                  : f.status === "warn"
-                                  ? "text-amber-600"
-                                  : "text-red-600"
-                              }`}
-                            >
-                              {f.confidence}% {f.status.toUpperCase()}
-                            </div>
-                          </li>
-                        ))}
-                        {mockCertId && (
-                            <div className="p-2 bg-emerald-100 text-emerald-700 font-semibold rounded-md flex justify-between">
-                                <span>Verification Complete!</span>
-                                <Button size="sm" variant="link" onClick={() => {
-                                    const newCert = history.find(h => h.id === mockCertId);
-                                    if (newCert) openDetails(newCert);
-                                }}>View Result</Button>
-                            </div>
-                        )}
-                      </ul>
-                    </div>
+                    <VerificationResults></VerificationResults>
                   ) : null}
                 </CardContent>
               </Card>

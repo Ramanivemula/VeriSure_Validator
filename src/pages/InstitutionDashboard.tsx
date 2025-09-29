@@ -27,179 +27,339 @@ import {
   Eye,
 } from "lucide-react";
 
-// --- SHADCN/UI & RECHARTS IMPORTS (Mocked for single-file environment) ---
-// Simplified and minimalist components (focus on soft corners, minimal shadow, and borders)
-const Card = (props: any) => <div className="rounded-lg border border-gray-200 bg-white text-gray-900 shadow-sm" {...props} />;
-const CardContent = (props: any) => <div className="p-5 pt-0" {...props} />;
-const CardHeader = (props: any) => <div className="flex flex-col space-y-1 p-5" {...props} />;
-const CardTitle = (props: any) => <h3 className="text-lg font-bold tracking-tight" {...props} />;
-const CardDescription = (props: any) => <p className="text-sm text-gray-500" {...props} />;
-const Button = (props: any) => {
-    // Simple buttons, no shadows, focus on clean hover state
-    const baseClass = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors h-9 px-3.5 py-2 shadow-none disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1";
-    let variantClass = '';
+// --- SHADCN/UI & RECHARTS IMPORTS (Minimalist Components) ---
+const Card = (props: any) => (
+  <div
+    className="rounded-lg border border-gray-200 bg-white text-gray-900 shadow-sm"
+    {...props}
+  />
+);
+const CardContent = (props: any) => (
+  <div className="p-5 pt-0" {...props} />
+);
+const CardHeader = (props: any) => (
+  <div className="flex flex-col space-y-1 p-5" {...props} />
+);
+const CardTitle = (props: any) => (
+  <h3 className="text-lg font-bold tracking-tight" {...props} />
+);
+const CardDescription = (props: any) => (
+  <p className="text-sm text-gray-500" {...props} />
+);
 
-    switch (props.variant) {
-        case 'secondary':
-            variantClass = 'bg-gray-100 text-gray-700 hover:bg-gray-200';
-            break;
-        case 'destructive':
-            variantClass = 'bg-red-600 text-white hover:bg-red-700';
-            break;
-        case 'outline':
-            variantClass = 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50';
-            break;
-        default: // primary
-            variantClass = 'bg-blue-600 text-white hover:bg-blue-700';
-            break;
-    }
-    return <button className={`${baseClass} ${variantClass} ${props.className || ''}`} {...props} />;
+const Button = (props: any) => {
+  const baseClass =
+    "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors h-9 px-3.5 py-2 shadow-none disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1";
+  let variantClass = "";
+
+  switch (props.variant) {
+    case "secondary":
+      variantClass = "bg-white text-gray-700 hover:bg-gray-200";
+      break;
+    case "destructive":
+      variantClass = "bg-red-600 text-white hover:bg-red-700";
+      break;
+    case "outline":
+      variantClass =
+        "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50";
+      break;
+    default:
+      variantClass = "bg-blue-600 text-white hover:bg-blue-700";
+      break;
+  }
+  return (
+    <button
+      className={`${baseClass} ${variantClass} ${props.className || ""}`}
+      {...props}
+    />
+  );
 };
-const Badge = (props: any) => <div className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold transition-colors focus:outline-none border border-transparent ${props.className || ''}`} {...props} />;
-const Input = (props: any) => <input className="flex h-9 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50" {...props} />;
-const Progress = (props: any) => <div className="w-full h-2 rounded-full bg-gray-200 overflow-hidden"><div style={{ width: `${props.value}%`, backgroundColor: props.color || '#3b82f6' }} className="h-full transition-all duration-700 rounded-full"></div></div>;
-const Table = (props: any) => <div className="w-full overflow-auto"><table className="w-full caption-bottom text-sm" {...props} /></div>;
-const TableHeader = (props: any) => <thead className="[&_tr]:border-b border-gray-200 bg-gray-50" {...props} />;
-const TableBody = (props: any) => <tbody className="[&_tr:last-child]:border-0" {...props} />;
-const TableRow = (props: any) => <tr className="border-b border-gray-100 transition-colors hover:bg-gray-50/50 data-[state=selected]:bg-gray-100" {...props} />;
-const TableHead = (props: any) => <th className="h-10 px-4 text-left align-middle font-semibold text-gray-700 [&:has([role=checkbox])]:pr-0" {...props} />;
-const TableCell = (props: any) => <td className="p-3 px-4 align-middle [&:has([role=checkbox])]:pr-0" {...props} />;
+
+const Badge = (props: any) => (
+  <div
+    className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold transition-colors focus:outline-none border border-transparent ${props.className || ""}`}
+    {...props}
+  />
+);
+const Input = (props: any) => (
+  <input
+    className="flex h-9 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
+    {...props}
+  />
+);
+const Progress = (props: any) => (
+  <div className="w-full h-2 rounded-full bg-gray-200 overflow-hidden">
+    <div
+      style={{ width: `${props.value}%`, backgroundColor: props.color || "#3b82f6" }}
+      className="h-full transition-all duration-700 rounded-full"
+    ></div>
+  </div>
+);
+const Table = (props: any) => (
+  <div className="w-full overflow-auto">
+    <table className="w-full caption-bottom text-sm" {...props} />
+  </div>
+);
+const TableHeader = (props: any) => (
+  <thead className="[&_tr]:border-b border-gray-200 bg-gray-50" {...props} />
+);
+const TableBody = (props: any) => (
+  <tbody className="[&_tr:last-child]:border-0" {...props} />
+);
+const TableRow = (props: any) => (
+  <tr
+    className="border-b border-gray-100 transition-colors hover:bg-gray-50/50 data-[state=selected]:bg-gray-100"
+    {...props}
+  />
+);
+const TableHead = (props: any) => (
+  <th
+    className="h-10 px-4 py-3 text-left align-middle font-semibold text-gray-700 [&:has([role=checkbox])]:pr-0"
+    {...props}
+  />
+);
+const TableCell = (props: any) => (
+  <td
+    className="px-4 py-3 align-middle [&:has([role=checkbox])]:pr-0"
+    {...props}
+  />
+);
 
 import {
-    ResponsiveContainer,
-    AreaChart,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip as ReTooltip,
-    BarChart,
-    Bar,
-    Legend,
-    Area,
+  ResponsiveContainer,
+  AreaChart,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as ReTooltip,
+  BarChart,
+  Bar,
+  Legend,
+  Area,
 } from "recharts";
 
-
-// ---------- MOCK DATA (Unchanged) ----------
+// ---------- MOCK DATA ----------
 const kpis = {
-    issued: 15400,
-    quota: 25000,
-    templates: 8,
-    disputes: 12,
-    trustScore: 92,
-    syncStatus: 'Live',
-    retroactive: 250,
+  issued: 15400,
+  quota: 25000,
+  templates: 8,
+  disputes: 12,
+  trustScore: 92,
+  syncStatus: "Live",
+  retroactive: 250,
 };
 
 const templates = [
-    { id: 1, name: "B.Tech CSE Degree", fields: 6, lastUpdated: "2025-09-10", status: 'Active', image: '/btech-cert-template.png' },
-    { id: 2, name: "MBA Completion Cert.", fields: 4, lastUpdated: "2025-08-20", status: 'Active', image: '/mba-cert-template.png' },
-    { id: 3, name: "B.Sc Final Marksheet", fields: 10, lastUpdated: "2024-11-05", status: 'Archived', image: '/bsc-marksheet-template.png' },
+  {
+    id: 1,
+    name: "B.Tech CSE Degree",
+    fields: 6,
+    lastUpdated: "2025-09-10",
+    status: "Active",
+    image: "/btech-cert-template.png",
+  },
+  {
+    id: 2,
+    name: "MBA Completion Cert.",
+    fields: 4,
+    lastUpdated: "2025-08-20",
+    status: "Active",
+    image: "/mba-cert-template.png",
+  },
+  {
+    id: 3,
+    name: "B.Sc Final Marksheet",
+    fields: 10,
+    lastUpdated: "2024-11-05",
+    status: "Archived",
+    image: "/bsc-marksheet-template.png",
+  },
 ];
 
 const disputes = [
-    { id: 'DISP-001', certId: 'CSE-1021', student: 'Ananya Sharma', type: 'Data Error (Name)', date: '2025-09-25', status: 'Pending Registrar', priority: 'High' },
-    { id: 'DISP-002', certId: 'MECH-505', student: 'Pritam Singh', type: 'Missing Record', date: '2025-09-20', status: 'Investigation', priority: 'Medium' },
-    { id: 'DISP-003', certId: 'MCOM-312', student: 'Kajal Devi', type: 'Marks Mismatch', date: '2025-09-15', status: 'Resolved', priority: 'Low' },
+  {
+    id: "DISP-001",
+    certId: "CSE-1021",
+    student: "Ananya Sharma",
+    type: "Data Error (Name)",
+    date: "2025-09-25",
+    status: "Pending Registrar",
+    priority: "High",
+  },
+  {
+    id: "DISP-002",
+    certId: "MECH-505",
+    student: "Pritam Singh",
+    type: "Missing Record",
+    date: "2025-09-20",
+    status: "Investigation",
+    priority: "Medium",
+  },
+  {
+    id: "DISP-003",
+    certId: "MCOM-312",
+    student: "Kajal Devi",
+    type: "Marks Mismatch",
+    date: "2025-09-15",
+    status: "Resolved",
+    priority: "Low",
+  },
 ];
 
 const keys = [
-    { id: 'KEY-001', name: 'Primary Signing Key 2024', status: 'Active', created: '2024-01-01', expiry: '2025-12-31', algorithm: 'ECDSA-P256' },
-    { id: 'KEY-002', name: 'Legacy Batch Key 2020-22', status: 'Revoked', created: '2020-05-15', expiry: '2022-05-15', algorithm: 'RSA-2048' },
+  {
+    id: "KEY-001",
+    name: "Primary Signing Key 2024",
+    status: "Active",
+    created: "2024-01-01",
+    expiry: "2025-12-31",
+    algorithm: "ECDSA-P256",
+  },
+  {
+    id: "KEY-002",
+    name: "Legacy Batch Key 2020-22",
+    status: "Revoked",
+    created: "2020-05-15",
+    expiry: "2022-05-15",
+    algorithm: "RSA-2048",
+  },
 ];
 
 const trustScoreHistory = [
-    { month: 'Jan', score: 85 },
-    { month: 'Feb', score: 86 },
-    { month: 'Mar', score: 89 },
-    { month: 'Apr', score: 91 },
-    { month: 'May', score: 92 },
-    { month: 'Jun', score: 90 },
-    { month: 'Jul', score: 92 },
-    { month: 'Aug', score: 93 },
-    { month: 'Sep', score: 92 },
+  { month: "Jan", score: 85 },
+  { month: "Feb", score: 86 },
+  { month: "Mar", score: 89 },
+  { month: "Apr", score: 91 },
+  { month: "May", score: 92 },
+  { month: "Jun", score: 90 },
+  { month: "Jul", score: 92 },
+  { month: "Aug", score: 93 },
+  { month: "Sep", score: 92 },
 ];
 
 const monthlyIssuance = [
-    { name: 'Jan', current: 1500, retroactive: 100 },
-    { name: 'Feb', current: 1650, retroactive: 50 },
-    { name: 'Mar', current: 1800, retroactive: 0 },
-    { name: 'Apr', current: 1400, retroactive: 20 },
-    { name: 'May', current: 1900, retroactive: 0 },
-    { name: 'Jun', current: 2100, retroactive: 80 },
-    { name: 'Jul', current: 1750, retroactive: 0 },
+  { name: "Jan", current: 1500, retroactive: 100 },
+  { name: "Feb", current: 1650, retroactive: 50 },
+  { name: "Mar", current: 1800, retroactive: 0 },
+  { name: "Apr", current: 1400, retroactive: 20 },
+  { name: "May", current: 1900, retroactive: 0 },
+  { name: "Jun", current: 2100, retroactive: 80 },
+  { name: "Jul", current: 1750, retroactive: 0 },
 ];
 
-// ---------- Helpers (Updated for Simplicity) ----------
+// ---------- Helpers ----------
 const StatCard = ({ title, value, icon, description, color, badgeText }: any) => (
-    <Card className="shadow-none">
-        <CardContent className="p-4 flex flex-col justify-between">
-            <div className="flex items-center justify-between">
-                <div className={`text-sm font-semibold ${color}`}>{title}</div>
-                {badgeText && <Badge className="bg-gray-100 text-gray-700 border-gray-300 text-xs shadow-none">{badgeText}</Badge>}
-            </div>
-            <div className="flex items-end justify-between mt-2">
-                <div className="text-4xl font-extrabold text-gray-900">{value}</div>
-                <div className={`p-2 rounded-full ${color.replace('text-', 'bg-')}/15`}>{icon}</div>
-            </div>
-            {/* Using a simple, subtle divider for separation */}
-            <p className="text-xs text-gray-500 mt-2 pt-2 border-t border-gray-100">{description}</p>
-        </CardContent>
-    </Card>
+  <Card className="shadow-none">
+    <CardContent className="p-4 flex flex-col justify-between">
+      <div className="flex items-center justify-between">
+        <div className={`text-sm font-semibold ${color}`}>{title}</div>
+        {badgeText && (
+          <Badge className="bg-gray-100 text-gray-700 border-gray-300 text-xs shadow-none">
+            {badgeText}
+          </Badge>
+        )}
+      </div>
+      <div className="flex items-end justify-between mt-2">
+        <div className="text-4xl font-extrabold text-gray-900">{value}</div>
+        <div className={`p-2 rounded-full ${color.replace("text-", "bg-")}/15`}>
+          {icon}
+        </div>
+      </div>
+      <p className="text-xs text-gray-500 mt-2 pt-2 border-t border-gray-100">
+        {description}
+      </p>
+    </CardContent>
+  </Card>
 );
 
 const NavButton = ({ children, icon, onClick, active }: any) => (
-    // Clean, light active state
-    <button onClick={onClick} className={`w-full flex items-center gap-3 p-3 rounded-md transition-all duration-150 ${active ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-gray-700 hover:bg-gray-100'}`}>
-        {icon}
-        <span>{children}</span>
-    </button>
+  <button
+    onClick={onClick}
+    className={`w-full flex items-center gap-3 p-3 rounded-md transition-all duration-150 ${
+      active
+        ? "bg-blue-50 text-blue-700 font-semibold"
+        : "text-gray-700 hover:bg-gray-100"
+    }`}
+  >
+    {icon}
+    <span>{children}</span>
+  </button>
 );
 
 const getStatusBadge = (status: string) => {
-    const map: Record<string, { text: string, className: string, icon: React.ReactNode }> = {
-        'Pending Registrar': { text: 'Pending', className: "bg-amber-100 text-amber-800 border-amber-300", icon: <Clock className="w-3 h-3 mr-1" /> },
-        'Investigation': { text: 'Investigating', className: "bg-blue-100 text-blue-800 border-blue-300", icon: <Scan className="w-3 h-3 mr-1" /> },
-        'Resolved': { text: 'Resolved', className: "bg-emerald-100 text-emerald-800 border-emerald-300", icon: <CheckCircle className="w-3 h-3 mr-1" /> },
-        'Active': { text: 'Active', className: "bg-emerald-100 text-emerald-800 border-emerald-300", icon: <CheckCircle className="w-3 h-3 mr-1" /> },
-        'Revoked': { text: 'Revoked', className: "bg-red-100 text-red-800 border-red-300", icon: <XCircle className="w-3 h-3 mr-1" /> },
-        'Archived': { text: 'Archived', className: "bg-gray-100 text-gray-800 border-gray-300", icon: <FileText className="w-3 h-3 mr-1" /> },
-    };
-    const result = map[status] || { text: status, className: "bg-gray-100 text-gray-700", icon: null };
-    return (
-        <Badge className={`border ${result.className}`}>
-            {result.icon}
-            {result.text}
-        </Badge>
-    );
+  const map: Record<
+    string,
+    { text: string; className: string; icon: React.ReactNode }
+  > = {
+    "Pending Registrar": {
+      text: "Pending",
+      className: "bg-amber-100 text-amber-800 border-amber-300",
+      icon: <Clock className="w-3 h-3 mr-1" />,
+    },
+    Investigation: {
+      text: "Investigating",
+      className: "bg-blue-100 text-blue-800 border-blue-300",
+      icon: <Scan className="w-3 h-3 mr-1" />,
+    },
+    Resolved: {
+      text: "Resolved",
+      className: "bg-emerald-100 text-emerald-800 border-emerald-300",
+      icon: <CheckCircle className="w-3 h-3 mr-1" />,
+    },
+    Active: {
+      text: "Active",
+      className: "bg-emerald-100 text-emerald-800 border-emerald-300",
+      icon: <CheckCircle className="w-3 h-3 mr-1" />,
+    },
+    Revoked: {
+      text: "Revoked",
+      className: "bg-red-100 text-red-800 border-red-300",
+      icon: <XCircle className="w-3 h-3 mr-1" />,
+    },
+    Archived: {
+      text: "Archived",
+      className: "bg-gray-100 text-gray-800 border-gray-300",
+      icon: <FileText className="w-3 h-3 mr-1" />,
+    },
+  };
+  const result =
+    map[status] || { text: status, className: "bg-gray-100 text-gray-700", icon: null };
+  return (
+    <Badge className={`border ${result.className}`}>
+      {result.icon}
+      {result.text}
+    </Badge>
+  );
 };
 
-// Custom Tooltip for the chart for better clarity (Unchanged)
 const ChartTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-        return (
-            <div className="p-3 bg-white border border-gray-300 rounded-md shadow-lg">
-                <p className="font-bold text-gray-800 mb-1">{label}</p>
-                {payload.map((p: any, index: number) => (
-                    <p key={index} className="text-sm" style={{ color: p.color }}>
-                        {p.name}: <span className="font-semibold">{p.value.toLocaleString()}</span>
-                    </p>
-                ))}
-            </div>
-        );
-    }
-    return null;
+  if (active && payload && payload.length) {
+    return (
+      <div className="p-3 bg-white border border-gray-300 rounded-md shadow-lg">
+        <p className="font-bold text-gray-800 mb-1">{label}</p>
+        {payload.map((p: any, index: number) => (
+          <p key={index} className="text-sm" style={{ color: p.color }}>
+            {p.name}: <span className="font-semibold">{p.value.toLocaleString()}</span>
+          </p>
+        ))}
+      </div>
+    );
+  }
+  return null;
 };
 
 // ---------- Page Component ----------
 export default function InstitutionDashboard() {
-  const [active, setActive] = useState<"dashboard"|"template"|"bulk"|"keys"|"disputes"|"reputation">("dashboard"); 
+  const [active, setActive] = useState<
+    "dashboard" | "template" | "bulk" | "keys" | "disputes" | "reputation"
+  >("dashboard");
   const [templateFile, setTemplateFile] = useState<File | null>(null);
-  const [templateStep, setTemplateStep] = useState(1); // 1: Upload, 2: Mapping, 3: Confirm
+  const [templateStep, setTemplateStep] = useState(1);
 
   const handleTemplateUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       setTemplateFile(e.target.files[0]);
-      setTemplateStep(2); 
+      setTemplateStep(2);
     }
   };
 
@@ -207,16 +367,15 @@ export default function InstitutionDashboard() {
     const lastMonth = monthlyIssuance[monthlyIssuance.length - 1];
     return lastMonth.current;
   }, []);
-  
+
   const handleLogout = () => {
-      console.log('Simulating log out and resetting dashboard state.');
-      setActive('dashboard');
+    console.log("Simulating log out and resetting dashboard state.");
+    setActive("dashboard");
   };
 
-
   return (
-    <div className="flex min-h-screen bg-gray-50 text-gray-800 font-sans">
-      {/* Sidebar - Simple, Light Style */}
+    <div className="flex min-h-screen bg-white text-gray-800 font-sans">
+      {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200 p-5 flex flex-col sticky top-0 h-screen shadow-sm">
         <div className="flex items-center gap-3 mb-8 border-b border-gray-100 pb-4">
           <div className="w-10 h-10 rounded-md bg-blue-600 flex items-center justify-center">
@@ -224,42 +383,90 @@ export default function InstitutionDashboard() {
           </div>
           <div>
             <div className="text-lg font-bold text-gray-900">Registrar Portal</div>
-            <div className="text-xs text-gray-500">XYZ University</div>
+            <div className="text-xs text-gray-500">
+              Jharkhand State Skill Mission (JSSM)
+            </div>
           </div>
         </div>
 
         <nav className="flex-1 space-y-1">
-          <NavButton active={active==='dashboard'} onClick={() => setActive('dashboard')} icon={<LayoutDashboard className="w-5 h-5"/>}>Dashboard</NavButton>
-          <NavButton active={active==='template'} onClick={() => setActive('template')} icon={<FileText className="w-5 h-5"/>}>Templates</NavButton>
-          <NavButton active={active==='bulk'} onClick={() => setActive('bulk')} icon={<Upload className="w-5 h-5"/>}>Bulk Issuance</NavButton>
-          <NavButton active={active==='keys'} onClick={() => setActive('keys')} icon={<KeyRound className="w-5 h-5"/>}>Signing Keys</NavButton>
-          <NavButton active={active==='disputes'} onClick={() => setActive('disputes')} icon={<MessageSquare className="w-5 h-5"/>}>Disputes <Badge className="ml-1.5 bg-red-500 text-white border-red-700 shadow-none">{disputes.filter(d => d.status.includes('Pending')).length}</Badge></NavButton>
-          <NavButton active={active==='reputation'} onClick={() => setActive('reputation')} icon={<BarChart4 className="w-5 h-5"/>}>Reputation</NavButton>
+          <NavButton
+            active={active === "dashboard"}
+            onClick={() => setActive("dashboard")}
+            icon={<LayoutDashboard className="w-5 h-5" />}
+          >
+            Dashboard
+          </NavButton>
+          <NavButton
+            active={active === "template"}
+            onClick={() => setActive("template")}
+            icon={<FileText className="w-5 h-5" />}
+          >
+            Templates
+          </NavButton>
+          <NavButton
+            active={active === "bulk"}
+            onClick={() => setActive("bulk")}
+            icon={<Upload className="w-5 h-5" />}
+          >
+            Bulk Issuance
+          </NavButton>
+          <NavButton
+            active={active === "keys"}
+            onClick={() => setActive("keys")}
+            icon={<KeyRound className="w-5 h-5" />}
+          >
+            Signing Keys
+          </NavButton>
+          <NavButton
+            active={active === "disputes"}
+            onClick={() => setActive("disputes")}
+            icon={<MessageSquare className="w-5 h-5" />}
+          >
+            <span className="flex items-center gap-2">
+              Disputes
+              <Badge className="px-3 bg-red-500 text-white border-red-700 rounded-xl shadow-none">
+                {disputes.filter((d) => d.status.includes("Pending")).length}
+              </Badge>
+            </span>
+          </NavButton>
+          <NavButton
+            active={active === "reputation"}
+            onClick={() => setActive("reputation")}
+            icon={<BarChart4 className="w-5 h-5" />}
+          >
+            Reputation
+          </NavButton>
         </nav>
 
         <div className="mt-8 pt-4 border-t border-gray-200">
-          <Button variant="outline" className="w-full bg-white text-gray-700 hover:bg-red-50 hover:text-red-600 border-red-300" onClick={handleLogout}> 
-            <LogOut className="w-4 h-4 mr-2"/> Log Out
+          <Button
+            variant="outline"
+            className="w-full bg-white text-gray-700 hover:bg-red-50 hover:text-red-600 border-red-300"
+            onClick={handleLogout}
+          >
+            <LogOut className="w-4 h-4 mr-2" /> Log Out
           </Button>
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 p-8 space-y-8 overflow-auto">
-        <header className="flex items-center justify-between pb-3 border-b border-gray-200">
+        {/* header */}
+        <header className="flex items-center justify-between pb-4 border-b border-gray-200">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Console Overview</h1>
             <p className="text-sm text-gray-500 mt-1">Status: Operational</p>
           </div>
           <Badge className="bg-emerald-50 text-emerald-800 font-medium px-3 py-1 flex items-center gap-1.5 border-emerald-300">
-            <Zap className="w-4 h-4"/> System Status: {kpis.syncStatus}
+            <Zap className="w-4 h-4" /> System Status: {kpis.syncStatus}
           </Badge>
         </header>
 
         {/* --- 1. Dashboard (KPIs & Charts) --- */}
         {active==='dashboard' && (
           <>
-            <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-white">
               <StatCard 
                 title="Certificates Issued" 
                 value={kpis.issued.toLocaleString()} 
