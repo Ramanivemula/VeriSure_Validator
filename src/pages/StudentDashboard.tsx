@@ -363,7 +363,8 @@ export default function StudentAllInOne() {
             <GraduationCap className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <div className="text-lg font-semibold">Student Portal</div>
+            
+            <div className="text-lg font-semibold cursor-pointer" onClick={() => navigate("/")}>Student Portal</div>
             <div className="text-xs text-muted-foreground">Certificate Hub</div>
           </div>
         </div>

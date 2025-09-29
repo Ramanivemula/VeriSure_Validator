@@ -171,7 +171,7 @@ export default function AdminDashboard() {
             <Database className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <div className="text-lg font-bold text-primary">Admin Console</div>
+            <div className="text-lg font-bold text-primary cursor-pointer" onClick={() => navigate("/")}>Admin Console</div>
             <div className="text-xs text-muted-foreground">Jharkhand HE Dept.</div>
           </div>
         </div>

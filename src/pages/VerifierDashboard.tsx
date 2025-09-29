@@ -269,7 +269,7 @@ export default function VerifierAllInOneEnhanced() {
             <Shield className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <div className="text-lg font-bold text-primary">Verifier Portal</div>
+            <div className="text-lg font-bold text-primary cursor-pointer" onClick={() => navigate("/")}>Verifier Portal</div>
             <div className="text-xs text-muted-foreground">Jhar-Praman Digital (JPD)</div>
           </div>
         </div>

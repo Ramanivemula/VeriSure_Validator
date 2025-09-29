@@ -27,6 +27,8 @@ import {
   Eye,
 } from "lucide-react";
 
+import { useNavigate } from "react-router-dom";
+
 // --- SHADCN/UI & RECHARTS IMPORTS (Minimalist Components) ---
 const Card = (props: any) => (
   <div
@@ -350,6 +352,8 @@ const ChartTooltip = ({ active, payload, label }: any) => {
 
 // ---------- Page Component ----------
 export default function InstitutionDashboard() {
+  const navigate = useNavigate();
+
   const [active, setActive] = useState<
     "dashboard" | "template" | "bulk" | "keys" | "disputes" | "reputation"
   >("dashboard");
@@ -382,7 +386,7 @@ export default function InstitutionDashboard() {
             <GraduationCap className="w-6 h-6 text-white" />
           </div>
           <div>
-            <div className="text-lg font-bold text-gray-900">Registrar Portal</div>
+            <div className="text-lg font-bold text-gray-900 cursor-pointer" onClick={() => navigate("/")}>Registrar Portal</div>
             <div className="text-xs text-gray-500">
               Jharkhand State Skill Mission (JSSM)
             </div>
